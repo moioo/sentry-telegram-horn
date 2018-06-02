@@ -43,6 +43,7 @@ app.post('/test-horn/:id', textRawParser , function(req, res) {
 })
 
 app.post('/horn/:id', bodyParser.json() , function(req, res) {
+  console.log(req.params)
   var id = req.params.id;
   var url = "https://integram.org/" + id;
   var json = req.body;
@@ -60,7 +61,7 @@ app.post('/horn/:id', bodyParser.json() , function(req, res) {
   var msg = json.message ;
   var link = `${json.url} (${json.project})`
   var post_json = JSON.stringify({text:`${pre} ${msg} \n ${link}`});
-  //console.log(post_json);
+  console.log(post_json);
   var a = new stream.PassThrough()
   a.write(post_json)
   a.pipe( request_to_horn(id,res) )
