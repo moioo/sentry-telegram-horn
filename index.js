@@ -5,6 +5,7 @@ var request = require('request')
 var bodyParser = require('body-parser')
 var stream = require("stream")
 var app = express();
+var baseURL = "https://integram.org/webhook/"
 
 app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
@@ -15,7 +16,7 @@ app.get('/', function(request, response) {
 
 
 var request_to_horn = function(id,res){
-  var url = "https://integram.org/" + id;
+  var url = `${baseURL}${id}`;
   return request.post({ url: url},function (error, response, body) {
       res.statusCode = error ? 500 : 200;
       res.send( body)
@@ -31,7 +32,7 @@ var textRawParser = bodyParser.text();
 
 app.post('/test-horn/:id', textRawParser , function(req, res) {
   var id = req.params.id;
-  var url = "https://integram.org/" + id;
+  var url = `${baseURL}${id}`;
   var raw = req.body;
   var post_json = JSON.stringify({text:raw});
   var stream = require("stream")
@@ -45,7 +46,7 @@ app.post('/test-horn/:id', textRawParser , function(req, res) {
 app.post('/horn/:id', bodyParser.json() , function(req, res) {
   console.log(req.params)
   var id = req.params.id;
-  var url = "https://integram.org/" + id;
+  var url = `${baseURL}${id}`;
   var json = req.body;
   var pre;
   if(json.level=='error' || json.level=='fatal'){
