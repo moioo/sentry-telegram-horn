@@ -48,20 +48,11 @@ app.post('/horn/:id', bodyParser.json() , function(req, res) {
   var id = req.params.id;
   var url = `${baseURL}${id}`;
   var json = req.body;
-  var pre;
-  if(json.level=='error' || json.level=='fatal'){
-    pre = "👺 "
-  }else if( json.level=='info' ){
-    pre = "⭐ "
-  }else if( json.level=='warning' || json.level=='debug' ){
-    pre = "👻 "
-  }else{
-    pre = "👻 "
-  }
-  pre += `[${json.level}]`
-  var msg = json.message ;
-  var link = `${json.url} (${json.project})`
-  var post_json = JSON.stringify({text:`${pre} ${msg} \n ${link}`});
+  console.log(json)
+  let content = `*${json.project}* \`${json.level.toUpperCase()}\`
+${json.message}
+${json.url}`
+  var post_json = JSON.stringify({text:content});
   console.log(post_json);
   var a = new stream.PassThrough()
   a.write(post_json)
